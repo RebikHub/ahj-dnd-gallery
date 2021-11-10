@@ -4,13 +4,14 @@ export default class Gallery {
     this.inputSrc = inputSrc;
     this.textName = null;
     this.textSrc = null;
+    this.error = null;
   }
 
   init(inputButton) {
     this.inputName.addEventListener('input', this.inputNameValue.bind(this));
+    this.inputName.addEventListener('keyup', this.inputEnter.bind(this));
     this.inputSrc.addEventListener('input', this.inputSrcValue.bind(this));
     this.inputSrc.addEventListener('keyup', this.inputEnter.bind(this));
-    this.inputName.addEventListener('keyup', this.inputEnter.bind(this));
 
     inputButton.addEventListener('click', this.inputButtonClick.bind(this));
   }
@@ -26,7 +27,7 @@ export default class Gallery {
 
   inputEnter(e) {
     if (e.key === 'Enter' && this.textName !== null && this.textSrc !== null) {
-      Gallery.addBlockWithImg(this.textSrc, this.textName);
+      this.addBlockWithImg(this.textSrc, this.textName);
       document.querySelector('.input-name').value = null;
       document.querySelector('.input-src').value = null;
       this.textName = null;
@@ -36,7 +37,7 @@ export default class Gallery {
 
   inputButtonClick() {
     if (this.textSrc !== null && this.textName !== null) {
-      Gallery.addBlockWithImg(this.textSrc, this.textName);
+      this.addBlockWithImg(this.textSrc, this.textName);
       document.querySelector('.input-name').value = null;
       document.querySelector('.input-src').value = null;
       this.textName = null;
@@ -44,29 +45,46 @@ export default class Gallery {
     }
   }
 
-  static addBlockWithImg(url, name) {
+  addBlockWithImg(url, name) {
     if (url) {
-      const widget = document.querySelector('.images-list');
-      const divImg = document.createElement('div');
-      const span = document.createElement('span');
       const image = document.createElement('img');
-      divImg.classList.add('image');
-      span.classList.add('close-image');
-      divImg.appendChild(image);
-      divImg.appendChild(span);
-      widget.appendChild(divImg);
       image.src = url;
       image.alt = name;
-      image.onerror = Gallery.verifyUrl;
+
+      image.onerror = () => {
+        this.error = true;
+      };
+      setTimeout(() => {
+        if (this.error) {
+          this.verifyUrl();
+        } else {
+          this.addImage(image);
+        }
+      }, 70);
     }
     Gallery.removeImage();
   }
 
-  static verifyUrl() {
-    const list = document.querySelectorAll('.image');
-    list[list.length - 1].remove();
-    document.querySelector('.error').style = 'display: block';
-    document.querySelector('.input-src').value = null;
+  addImage(image) {
+    this.error = null;
+    const widget = document.querySelector('.images-list');
+    const divImg = document.createElement('div');
+    const span = document.createElement('span');
+    divImg.classList.add('image');
+    span.classList.add('close-image');
+    divImg.appendChild(image);
+    divImg.appendChild(span);
+    widget.appendChild(divImg);
+  }
+
+  verifyUrl() {
+    const error = document.querySelector('.error');
+    const inputSrc = document.querySelector('.input-src');
+    error.style = 'display: block';
+    inputSrc.value = null;
+    error.style.left = `${inputSrc.offsetLeft}px`;
+    error.style.top = `${inputSrc.offsetTop + inputSrc.offsetHeight}px`;
+    this.error = null;
   }
 
   static removeImage() {

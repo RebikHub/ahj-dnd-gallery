@@ -27,21 +27,24 @@ body {
 }
 
 .lable-name {
+    display: flex;
     margin: 35px 20px 0px 20px;
 }
 
 .lable-src {
+    display: flex;
     margin: 20px 20px 20px 20px;
 }
 
 .input-name{
     width: 253px;
-    margin-left: 139px;
+    margin-left: auto;
 }
 
 .input-src {
+    position: relative;
     width: 253px;
-    margin-left: 40px;
+    margin-left: auto;
 }
 
 .button {
@@ -68,7 +71,7 @@ body {
     position: absolute;
     z-index: 1;
     left: 90px;
-    top: -10px;
+    top: -12px;
     display: block;
     border: 1px solid #999;
     border-radius: 20px;
@@ -76,6 +79,7 @@ body {
     height: 20px;
     background-image: url('../img/cross.png');
     background-size: cover;
+    background-color: white;
 }
 
 img {
@@ -84,9 +88,7 @@ img {
 }
 
 .error {
-    position: fixed;
-    top: 100px;
-    left: 410px;
+    position: absolute;
     font-size: 12px;
     display: none;
     background: black;
