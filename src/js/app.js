@@ -1,9 +1,10 @@
+import DnD from './dnd';
 import Gallery from './gallery';
 
 console.log('app started');
 
-const inputName = document.querySelector('.input-name');
-const inputSrc = document.querySelector('.input-src');
-const gallery = new Gallery(inputName, inputSrc);
+const gallery = new Gallery();
+const dnd = new DnD();
 
-gallery.init(document.querySelector('.button'));
+dnd.drop();
+gallery.events();

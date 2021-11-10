@@ -18,14 +18,16 @@
         <span>Ссылка на изображение</span>
         <input type="text" class="input-src" required>
       </label>
-      <button type="button" class="button">Добавить</button>
+      <div class="buttons">
+        <button type="button" class="button btn-add">Добавить</button>
+        <button type="button" class="button btn-download">Загрузить</button>
+      </div>
     </form>
-    <div class="images-list">
-      <!-- <div class="image">
-        <img src="https://cdn-icons-png.flaticon.com/128/3089/3089803.png" alt="">
-        <span class="close-image"></span>
-      </div> -->
+    <div class="dnd none">
+      Drag and Drop files here or Click to select
+      <input accept="image/*" type="file" class="dnd-input" multiple>
     </div>
+    <div class="images-list"></div>
   </div>
 </body>
 </html>

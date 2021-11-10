@@ -1,19 +1,24 @@
 export default class Gallery {
-  constructor(inputName, inputSrc) {
-    this.inputName = inputName;
-    this.inputSrc = inputSrc;
+  constructor() {
+    this.widget = document.querySelector('.form-widget');
+    this.inputName = document.querySelector('.input-name');
+    this.inputSrc = document.querySelector('.input-src');
+    this.addButton = document.querySelector('.btn-add');
+    this.downloadButton = document.querySelector('.btn-download');
+    this.errorDiv = document.querySelector('.error');
+    this.dnd = document.querySelector('.dnd');
     this.textName = null;
     this.textSrc = null;
     this.error = null;
   }
 
-  init(inputButton) {
+  events() {
     this.inputName.addEventListener('input', this.inputNameValue.bind(this));
     this.inputName.addEventListener('keyup', this.inputEnter.bind(this));
     this.inputSrc.addEventListener('input', this.inputSrcValue.bind(this));
     this.inputSrc.addEventListener('keyup', this.inputEnter.bind(this));
-
-    inputButton.addEventListener('click', this.inputButtonClick.bind(this));
+    this.addButton.addEventListener('click', this.inputButtonClick.bind(this));
+    this.downloadButton.addEventListener('click', this.downloadClick.bind(this));
   }
 
   inputNameValue(e) {
@@ -28,8 +33,8 @@ export default class Gallery {
   inputEnter(e) {
     if (e.key === 'Enter' && this.textName !== null && this.textSrc !== null) {
       this.addBlockWithImg(this.textSrc, this.textName);
-      document.querySelector('.input-name').value = null;
-      document.querySelector('.input-src').value = null;
+      this.inputName.value = null;
+      this.inputSrc.value = null;
       this.textName = null;
       this.textSrc = null;
     }
@@ -38,11 +43,16 @@ export default class Gallery {
   inputButtonClick() {
     if (this.textSrc !== null && this.textName !== null) {
       this.addBlockWithImg(this.textSrc, this.textName);
-      document.querySelector('.input-name').value = null;
-      document.querySelector('.input-src').value = null;
+      this.inputName.value = null;
+      this.inputSrc.value = null;
       this.textName = null;
       this.textSrc = null;
     }
+  }
+
+  downloadClick() {
+    this.widget.classList.add('none');
+    this.dnd.classList.remove('none');
   }
 
   addBlockWithImg(url, name) {
@@ -58,15 +68,15 @@ export default class Gallery {
         if (this.error) {
           this.verifyUrl();
         } else {
-          this.addImage(image);
+          this.error = null;
+          Gallery.addImage(image);
         }
       }, 70);
     }
     Gallery.removeImage();
   }
 
-  addImage(image) {
-    this.error = null;
+  static addImage(image) {
     const widget = document.querySelector('.images-list');
     const divImg = document.createElement('div');
     const span = document.createElement('span');
@@ -78,13 +88,19 @@ export default class Gallery {
   }
 
   verifyUrl() {
-    const error = document.querySelector('.error');
-    const inputSrc = document.querySelector('.input-src');
-    error.style = 'display: block';
-    inputSrc.value = null;
-    error.style.left = `${inputSrc.offsetLeft}px`;
-    error.style.top = `${inputSrc.offsetTop + inputSrc.offsetHeight}px`;
-    this.error = null;
+    this.errorDiv.style = 'display: block';
+    this.inputSrc.value = null;
+    this.errorDiv.style.left = `${this.inputSrc.offsetLeft}px`;
+    this.errorDiv.style.top = `${this.inputSrc.offsetTop + this.inputSrc.offsetHeight}px`;
+    this.closeErrorBlock();
+  }
+
+  closeErrorBlock() {
+    document.body.addEventListener('click', () => {
+      if (this.errorDiv.style.display === 'block') {
+        this.errorDiv.style.display = 'none';
+      }
+    });
   }
 
   static removeImage() {
