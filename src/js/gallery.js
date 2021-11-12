@@ -63,16 +63,8 @@ export default class Gallery {
       image.src = url;
       image.alt = name;
 
-      image.onerror = () => {
-        this.error = true;
-      };
-      setTimeout(() => {
-        if (this.error) {
-          this.verifyUrl();
-        } else {
-          this.addImage(image);
-        }
-      }, 10);
+      image.onerror = () => this.verifyUrl();
+      image.onload = () => this.addImage(image);
     }
   }
 
