@@ -1,9 +1,9 @@
 {
-  "name": "ahj-events-gallery",
+  "name": "ahj-dnd-gallery",
   "version": "1.0.0",
   "main": "index.js",
-  "repository": "https://github.com/RebikHub/ahj-events-gallery.git",
-  "author": "RebiHub <rebikovlk@mail.ru>",
+  "repository": "https://github.com/RebikHub/ahj-dnd-gallery.git",
+  "author": "RebikHub <rebikovlk@mail.ru>",
   "license": "MIT",
   "scripts": {
     "start": "webpack serve --config webpack.dev.js",
